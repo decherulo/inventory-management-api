@@ -1,13 +1,10 @@
 from flask import Flask, jsonify, request
+import requests
 
 app = Flask(__name__)
 
-
-import requests
-
 OPENFOODFACTS_BASE = "https://world.openfoodfacts.org"
 
-# Mock database — simulates data an agrovet's inventory system might hold
 inventory = [
     {
         "id": 1,
@@ -94,6 +91,7 @@ def add_item():
     inventory.append(new_item)
     return jsonify(new_item), 201
 
+
 @app.route("/inventory/<int:item_id>", methods=["PATCH"])
 def update_item(item_id):
     data = request.get_json()
@@ -108,6 +106,7 @@ def update_item(item_id):
             return jsonify(item), 200
 
     return jsonify({"error": "Item not found"}), 404
+
 
 @app.route("/inventory/<int:item_id>", methods=["DELETE"])
 def delete_item(item_id):
@@ -173,6 +172,7 @@ def search_external_product():
         ]
         return jsonify(results), 200
 
+
 @app.route("/products/import", methods=["POST"])
 def import_external_product():
     data = request.get_json()
@@ -224,7 +224,6 @@ def import_external_product():
 
     inventory.append(new_item)
     return jsonify(new_item), 201
-
 
 
 if __name__ == "__main__":
